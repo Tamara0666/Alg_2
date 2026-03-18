@@ -28,4 +28,13 @@ void countingSortBit(std::vector<unsigned char> &A, int k){
     for(int i = 0; i < s; i++){
         C[(A[i] >> k) & 1]++;
     }
+    
+    C[1] += C[0];
+
+    for(int i = s-1; i >= 0; i--){
+        int bit = (A[i] >> k) & 1;
+        B[--C[bit]] = A[i];
+    }
+    
+    A = B;
 }
