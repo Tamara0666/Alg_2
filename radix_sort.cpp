@@ -52,4 +52,14 @@ void output(const std::vector<unsigned char>& A){
         std::cerr << "Error writing in file out.txt\n";
         return;
     }
+
+    for (size_t i = 0; i < A.size(); i++)
+    {
+        out << static_cast<int>(A[i]);
+        if (i + 1 < A.size())
+        {
+            out << " ";
+        }
+    }
+    out << std::endl;
 }
