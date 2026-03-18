@@ -63,3 +63,18 @@ void output(const std::vector<unsigned char>& A){
     }
     out << std::endl;
 }
+
+int main(int argc, char*argv[]){
+    if (argc != 2)
+    {
+        std::cerr << "Add only one file <input file>.\n";
+        return 1;
+    }
+
+    std::vector<unsigned char> numbers = readInput(argv[1]);
+    if (numbers.empty())
+    {
+        std::cerr << "No data for sorting.\n";
+        return 1;
+    }
+}
