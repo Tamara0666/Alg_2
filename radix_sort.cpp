@@ -44,3 +44,12 @@ void binaryRadixSort(std::vector<unsigned char>& A){
         countingSortBit(A, k);
     }   
 }
+
+void output(const std::vector<unsigned char>& A){
+    std::ofstream out("out.txt");
+    if (!out)
+    {
+        std::cerr << "Error writing in file out.txt\n";
+        return;
+    }
+}
