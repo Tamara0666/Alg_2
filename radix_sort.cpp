@@ -38,3 +38,6 @@ void countingSortBit(std::vector<unsigned char> &A, int k){
     
     A = B;
 }
+
+void binaryRadixSort(std::vector<unsigned char>& A){  
+}
