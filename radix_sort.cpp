@@ -77,4 +77,9 @@ int main(int argc, char*argv[]){
         std::cerr << "No data for sorting.\n";
         return 1;
     }
+    
+    binaryRadixSort(numbers);
+    output(numbers);
+
+    return 0;
 }
