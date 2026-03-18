@@ -20,3 +20,12 @@ std::vector<unsigned char> readInput(const std::string& filename){
     }
     return numbers;
 }
+
+void countingSortBit(std::vector<unsigned char> &A, int k){
+    int s = A.size();
+    std::vector<unsigned char> B(s);
+    int C[2] = {0, 0}; 
+    for(int i = 0; i < s; i++){
+        C[(A[i] >> k) & 1]++;
+    }
+}
