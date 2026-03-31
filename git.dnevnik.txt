@@ -1,0 +1,35 @@
+*   379320e (HEAD -> master, origin/master) Merge pull request #7 from Tamara0666/input
+|\  
+| * 6014093 (origin/input, input) Added numbers in file for input
+| * 760a4b0 Added file for input
+|/  
+*   45b2865 Merge pull request #6 from Tamara0666/gitignore
+|\  
+| * fc48248 (origin/gitignore, gitignore) Added gitignore file
+|/  
+*   01372d0 Merge pull request #5 from Tamara0666/main
+|\  
+| * 208494d (origin/main, main) Finished function - call of functions
+| * d1b63c9 Start of main function
+|/  
+*   1239daa Merge pull request #4 from Tamara0666/output
+|\  
+| * 2695175 (origin/output, output) Finished output function
+| * 9d8075e Error handler for output function
+|/  
+*   db705b7 Merge pull request #3 from Tamara0666/binary_radix_sort
+|\  
+| * 364eed6 (origin/binary_radix_sort, binary_radix_sort) Finished function binary radix sort
+| * aef34f3 Start of function binary radix sort
+|/  
+*   a3b21aa Merge pull request #2 from Tamara0666/counting_sort_bit
+|\  
+| * f721d39 (origin/counting_sort_bit, counting_sort_bit) Finished function counting sort for bit
+| * 75ab32d Start of function counting sort for bit
+|/  
+*   a455119 Merge pull request #1 from Tamara0666/file_input
+|\  
+| * 3543d66 (origin/file_input, file_input) Finished input function
+| * d5fa92f Added libraries and start of function input
+|/  
+* f1912c3 First main branch
