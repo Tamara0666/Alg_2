@@ -1,13 +1,5 @@
-name: Test Workflow
+- name: Dovoli izvajanje skripte
+  run: chmod +x test.sh
 
-on:
-  push:
-    branches: [ main ]
-
-jobs:
-  test:
-    runs-on: self-hosted
-
-    steps:
-      - name: Test
-        run: echo "Runner dela!"
+- name: Zaženi test.sh
+  run: ./test.sh
