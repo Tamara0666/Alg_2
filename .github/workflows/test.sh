@@ -1,12 +1,15 @@
 #!/bin/bash
 
-g++ -o program radix_sort.cpp
+g++ -o program radix_sort.cpp || exit 1
 
-output=$(./program <<< "2 3")
+output=$(echo "5 3 8 1 2" | ./program)
 
-if [ "$output" != "5" ]; then
-  echo "Test FAIL"
+expected="1 2 3 5 8"
+
+if [ "$output" != "$expected" ]; then
+  echo "FAIL"
+  echo "Got: $output"
   exit 1
 fi
 
-echo "Test PASS"
+echo "PASS"
