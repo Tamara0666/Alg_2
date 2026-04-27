@@ -1,27 +1,18 @@
 #!/bin/bash
 
-set -e
+rm -f out.txt napaka.txt
 
-rm -f out.txt
+g++ -o program radix_sort.cpp || { echo "COMPILATION ERROR" > napaka.txt; exit 1; }
 
-echo "BUILD..."
-g++ -o program radix_sort.cpp || exit 1
+./program vhod.txt || { echo "RUNTIME ERROR" > napaka.txt; exit 1; }
 
-echo "RUN..."
-./program vhod.txt || exit 1
-
-echo "CHECK..."
-
-# preberi output
 result=$(cat out.txt | xargs)
-
-# preveri, če je sortiran
 sorted=$(echo "$result" | tr ' ' '\n' | sort -n | xargs)
 
 if [ "$result" != "$sorted" ]; then
-  echo "FAIL: array is not sorted"
-  echo "Got: $result"
-  exit 1
+    echo "NOT SORTED" > napaka.txt
+    exit 1
 fi
 
-echo "PASS: correctly sorted"
+echo "" > napaka.txt
+echo "OK"
