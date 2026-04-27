@@ -5,15 +5,48 @@ on:
     branches: [ master ]
 
 jobs:
-  test:
+
+  preveri:
     runs-on: self-hosted
 
     steps:
-      - name: Checkout kode
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Dovoli izvajanje skripte
-        run: chmod +x test.sh
+      - name: preveri test.sh
+        run: |
+          if [ ! -f test.sh ]; then
+            echo "NAPAKA" > napaka.txt
+            exit 1
+          else
+            echo "" > napaka.txt
+          fi
 
-      - name: Zaženi teste
-        run: ./test.sh
+      - name: upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: napaka
+          path: napaka.txt
+
+  test:
+    needs: preveri
+    runs-on: self-hosted
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: napaka
+
+      - name: check napaka
+        run: |
+          if [ -s napaka.txt ]; then
+            echo "FAIL"
+            exit 1
+          fi
+
+      - name: run tests
+        run: |
+          chmod +x test.sh
+          ./test.sh
