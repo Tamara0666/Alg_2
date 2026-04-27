@@ -1,6 +1,6 @@
 #!/bin/bash
 
-g++ -o program main.cpp
+g++ -o program radix_sort.cpp
 
 output=$(./program <<< "2 3")
 
