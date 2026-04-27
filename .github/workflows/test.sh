@@ -8,7 +8,8 @@ echo "5 3 8 1 2" > input.txt
 
 ./program input.txt || exit 1
 
-output=$(cat out.txt | tr -d '\n')
+# NORMALIZACIJA outputa (ključni fix!)
+output=$(cat out.txt | xargs)
 
 expected="1 2 3 5 8"
 
