@@ -12,15 +12,31 @@ jobs:
     runs-on: self-hosted
 
     steps:
-      - uses: actions/checkout@v4
+      # Checkout code
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
+      # Debug: preveri Docker pravice
+      - name: Check Docker info
+        run: |
+          whoami
+          groups
+          docker info || echo "Docker info failed — check permissions"
+
+      # Debug: pokaži vsebino mape, kjer bo docker build
+      - name: List workspace
+        run: ls -la
+
+      # Build Docker image
       - name: Build Docker image
         run: docker build -t radix-app .
 
-      - name: Login DockerHub
+      # Docker login
+      - name: Login to DockerHub
         run: echo "${{ secrets.DOCKER_PASS }}" | docker login -u "${{ secrets.DOCKER_USER }}" --password-stdin
 
-      - name: Push image
+      # Tag & push image
+      - name: Push Docker image
         run: |
           docker tag radix-app ${{ secrets.DOCKER_USER }}/radix-app:latest
           docker push ${{ secrets.DOCKER_USER }}/radix-app:latest
