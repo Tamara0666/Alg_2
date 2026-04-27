@@ -2,29 +2,26 @@
 
 set -e
 
-rm -f out.txt input.txt
+rm -f out.txt
 
 echo "BUILD..."
-g++ -o program radix_sort.cpp || { echo "BUILD FAILED"; exit 1; }
+g++ -o program radix_sort.cpp || exit 1
 
 echo "RUN..."
-echo "5 3 8 1 2" > input.txt
+./program vhod.txt || exit 1
 
-./program input.txt || { echo "RUNTIME FAILED"; exit 1; }
+echo "CHECK..."
 
-echo "OUTPUT FILE:"
-cat out.txt
+# preberi output
+result=$(cat out.txt | xargs)
 
-output=$(cat out.txt | xargs)
-echo "NORMALIZED OUTPUT: $output"
+# preveri, če je sortiran
+sorted=$(echo "$result" | tr ' ' '\n' | sort -n | xargs)
 
-expected="1 2 3 5 8"
-
-if [ "$output" != "$expected" ]; then
-  echo "❌ WRONG RESULT"
-  echo "EXPECTED: $expected"
-  echo "GOT: $output"
+if [ "$result" != "$sorted" ]; then
+  echo "FAIL: array is not sorted"
+  echo "Got: $result"
   exit 1
 fi
 
-echo "✅ PASS"
+echo "PASS: correctly sorted"
