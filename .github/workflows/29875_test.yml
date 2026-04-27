@@ -1,5 +1,13 @@
-- name: Dovoli izvajanje skripte
-  run: chmod +x test.sh
+jobs:
+  test:
+    runs-on: self-hosted
 
-- name: Zaženi test.sh
-  run: ./test.sh
+    steps:
+      - name: Checkout kode
+        uses: actions/checkout@v4
+
+      - name: Dovoli izvajanje skripte
+        run: chmod +x test.sh
+
+      - name: Zaženi teste
+        run: ./test.sh
