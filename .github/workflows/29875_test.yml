@@ -6,47 +6,49 @@ on:
 
 jobs:
 
-  preveri:
+  check:
     runs-on: self-hosted
+
+    strategy:
+      matrix:
+        version: [1]
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: preveri test.sh
+      - name: Check files
         run: |
           if [ ! -f test.sh ]; then
-            echo "NAPAKA" > napaka.txt
-            exit 1
+            echo "missing test.sh" > napaka.txt
           else
             echo "" > napaka.txt
           fi
 
-      - name: upload artifact
-        uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v4
         with:
           name: napaka
           path: napaka.txt
 
+
   test:
-    needs: preveri
+    needs: check
     runs-on: self-hosted
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: download artifact
-        uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v4
         with:
           name: napaka
 
-      - name: check napaka
+      - name: Check error
         run: |
           if [ -s napaka.txt ]; then
             echo "FAIL"
             exit 1
           fi
 
-      - name: run tests
+      - name: Run tests
         run: |
           chmod +x test.sh
           ./test.sh
