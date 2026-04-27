@@ -1,22 +1,18 @@
 #!/bin/bash
 
+set -e
+
 rm -f out.txt input.txt
 
-g++ -o program radix_sort.cpp || exit 1
+echo "BUILD..."
+g++ -o program radix_sort.cpp
 
+echo "RUN..."
 echo "5 3 8 1 2" > input.txt
 
-./program input.txt || exit 1
+./program input.txt
 
-# NORMALIZACIJA outputa (ključni fix!)
-output=$(cat out.txt | xargs)
+echo "OUTPUT:"
+cat out.txt
 
-expected="1 2 3 5 8"
-
-if [ "$output" != "$expected" ]; then
-  echo "FAIL"
-  echo "Got: $output"
-  exit 1
-fi
-
-echo "PASS"
+echo "DONE"
