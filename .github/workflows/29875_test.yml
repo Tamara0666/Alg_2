@@ -14,11 +14,10 @@ jobs:
 
       - name: Check files
         run: |
+          # preveri ali obstaja test.sh
           if [ ! -f test.sh ]; then
-            echo "missing test.sh" > napaka.txt
-          else
-            echo "" > napaka.txt
-          fi
+            echo "missing test.sh" 1>&2
+          fi 2> napaka.txt
 
       - name: DEBUG napaka.txt (check job)
         run: cat napaka.txt || echo "no napaka.txt"
