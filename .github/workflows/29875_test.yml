@@ -9,6 +9,10 @@ jobs:
   check:
     runs-on: self-hosted
 
+    strategy:
+      matrix:
+        compiler: [g++]
+
     steps:
       - uses: actions/checkout@v4
 
