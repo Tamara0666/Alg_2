@@ -1,70 +1,82 @@
 name: Test Workflow
-
+#workflow se sproži ob vsakem push na master branch - ci trigger
 on:
   push:
     branches: [ master ]
-
+#1 job - preverimo okolje / datoteke
 jobs:
 
   check:
+    #teče na svojem strežniku, ne na github hosted
     runs-on: self-hosted
-
+    #definira več variant builda - tu le g++
     strategy:
+      #omogoča jih tudi več
       matrix:
         compiler: [g++]
-
+    #steps od check job
     steps:
+      #prenese repozitorij na runner
       - uses: actions/checkout@v4
-
+      #preverja obstoj, če dat. ni izpiše napako
       - name: Check files
         run: |
           # preveri ali obstaja test.sh
           if [ ! -f test.sh ]; then
+            #redirect logika - stdout 1 > stderr &2
             echo "missing test.sh" 1>&2
+            #stderr se shrani v datoteko napaka.txt (tudi ostale gredo sem)
           fi 2> napaka.txt
-
+        #pokaže ali je nastala napaka
       - name: DEBUG napaka.txt (check job)
         run: cat napaka.txt || echo "no napaka.txt"
-
+        #naloži artifact - shrani datoteko kot artifact (je datoteka med jobi)
       - uses: actions/upload-artifact@v4
         with:
           name: napaka
           path: napaka.txt
 
-
+  #2 jon - test
   test:
+    #zažene šele ko check job konča
     needs: check
+    #na svojem runnerji - strežniku
     runs-on: self-hosted
-
+    #prenese repozitorij na runner
     steps:
       - uses: actions/checkout@v4
-
+      #naloži artifact - torej napaka.txt iz prejšnega joba
       - uses: actions/download-artifact@v4
         with:
           name: napaka
-
+        #prikaže napako oz če je kaj bilo narobe v check fazi
       - name: SHOW napaka.txt
         run: |
           echo "=== napaka.txt ==="
           cat napaka.txt || echo "no file"
-
+      #pregledamo workspace
       - name: SHOW files
         run: |
           echo "=== workspace ==="
+          #seznam vseh datotek
           ls -la
           echo "=== input file ==="
+          #preveri input file in output
           cat vhod.txt || echo "missing vhod.txt"
           echo "=== output file ==="
           cat out.txt || echo "missing out.txt"
-
+        #preveri fail condition
       - name: Check error
         run: |
+          #s napaka - če dat. ni prazna obstaja napaka
+          #tedaj workflow faila
           if [ -s napaka.txt ]; then
             echo "FAIL"
             exit 1
           fi
-
+        #zažene test
       - name: Run tests
         run: |
+          #dodamo pravice da lahko zaženemo test script
           chmod +x test.sh
           ./test.sh
