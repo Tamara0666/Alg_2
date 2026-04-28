@@ -1,41 +1,55 @@
 name: Deploy Workflow
-
+#kdaj se workflow zažene - avtomatsko po določenem workflowu
 on:
   workflow_run:
+    #zažene po tem workflowu
     workflows: ["Test Workflow"]
+    #sproži se, ko se Test worflow zaključi
     types:
       - completed
-
+#1 job - 1 build deploy pipeline
 jobs:
   deploy:
+    #pogoj za zagon, ki se zgodi samo če je test workflow uspešen
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    #uporablja svoj strežnik in ne github cloud
+    #s tem imamo več nadzora
     runs-on: self-hosted
 
     steps:
-      # Checkout code
+      # Checkout code - prenese kodo iz github repozitorija na runner
       - name: Checkout repository
         uses: actions/checkout@v4
 
       # Debug: preveri Docker pravice
       - name: Check Docker info
+      #whoami - kateri user izvaja pipeline
+      #groups - ali je user v docker skupini
+      #docker info - ali docker deluje
+      #če ne deluje izpiše opozorilo - diagnostika permission errorjev
         run: |
           whoami
           groups
           docker info || echo "Docker info failed — check permissions"
 
-      # Debug: pokaži vsebino mape, kjer bo docker build
+      # Debug: pokaži vsebino mape, kjer bo docker build - pokaže katere dat. so na voljo za build
       - name: List workspace
         run: ls -la
 
-      # Build Docker image
+      # Build Docker image - naredi docker image iz dockerfile
+      #rezultat je image radix-app
       - name: Build Docker image
         run: docker build -t radix-app .
 
       # Docker login
+      #up. github secrets torej docker user in pass da se prijavi v docker hub
+      #je varno ker password ni v logih
       - name: Login to DockerHub
         run: echo "${{ secrets.DOCKER_PASS }}" | docker login -u "${{ secrets.DOCKER_USER }}" --password-stdin
 
       # Tag & push image
+      #docker tag pripravi image za dockerhub
+      #docker push pošlje image na dockerhub
       - name: Push Docker image
         run: |
           docker tag radix-app ${{ secrets.DOCKER_USER }}/radix-app:latest
