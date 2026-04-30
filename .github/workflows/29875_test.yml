@@ -9,11 +9,6 @@ jobs:
   check:
     #teče na svojem strežniku, ne na github hosted
     runs-on: self-hosted
-    #definira več variant builda - tu le g++
-    strategy:
-      #omogoča jih tudi več
-      matrix:
-        compiler: [g++]
     #steps od check job
     steps:
       #prenese repozitorij na runner
@@ -38,7 +33,13 @@ jobs:
 
   #2 jon - test
   test:
+  #različne variante builda
+    strategy:
+      #omogoča jih tudi več
+      matrix:
+        compiler: [g++, clang++]
     #zažene šele ko check job konča
+    
     needs: check
     #ali je bil uspešenv:
     if: success()
@@ -76,6 +77,9 @@ jobs:
             echo "FAIL"
             exit 1
           fi
+
+      - name: Build program
+        run: ${{ matrix.compiler }} -o program radix_sort.cpp
         #zažene test
       - name: Run tests
         run: |
