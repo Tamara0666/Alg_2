@@ -40,6 +40,8 @@ jobs:
   test:
     #zažene šele ko check job konča
     needs: check
+    #ali je bil uspešenv:
+    if: success()
     #na svojem runnerji - strežniku
     runs-on: self-hosted
     #prenese repozitorij na runner
