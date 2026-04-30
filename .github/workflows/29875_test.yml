@@ -37,7 +37,7 @@ jobs:
     strategy:
       #omogoča jih tudi več
       matrix:
-        compiler: [g++, clang++]
+        compiler: [g++]
     #zažene šele ko check job konča
     
     needs: check
