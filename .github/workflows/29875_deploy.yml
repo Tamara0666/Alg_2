@@ -20,6 +20,19 @@ jobs:
       # Checkout code - prenese kodo iz github repozitorija na runner
       - name: Checkout repository
         uses: actions/checkout@v4
+      #naložimo artefact da lahko preverimo če je prišlo do kakšne napake
+      - name: Download artifact (napaka.txt)
+        uses: actions/download-artifact@v4
+        with:
+          name: napaka
+      #preverimo če je datoteka napaka.txt prazna
+      #če ni je prišlo do napake, tedaj se deploy prekine
+      - name: Check napaka.txt
+        run: |
+          if [ -s napaka.txt ]; then
+            echo "ERROR: napake obstajajo"
+            exit 1
+          fi
 
       # Debug: preveri Docker pravice
       - name: Check Docker info
